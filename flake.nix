@@ -12,14 +12,14 @@
           pkgs = nixpkgs.legacyPackages.${prev.system};
         in
         rec {
-          vimUtilsHybrid = final.callPackage ./neovim-lua/vim-utils.nix {
+          vimUtilsHybrid = final.callPackage ./nvim-lua/vim-utils.nix {
             inherit (pkgs.lua51Packages) hasLuaModule;
           };
-          neovimLuaUtils = final.callPackage ./neovim-lua/utils.nix {
+          neovimLuaUtils = final.callPackage ./nvim-lua/utils.nix {
             inherit (pkgs.lua51Packages) buildLuarocksPackage;
           };
-          wrapNeovimLuaUnstable = final.callPackage ./neovim-lua/wrapper.nix { };
-          neovim-lua-unwrapped = final.callPackage ./neovim-lua {
+          wrapNeovimLuaUnstable = final.callPackage ./nvim-lua/wrapper.nix { };
+          neovim-lua-unwrapped = final.callPackage ./nvim-lua {
             CoreServices = pkgs.darwin.apple_sdk.frameworks.CoreServices;
             lua = pkgs.luajit;
           };
