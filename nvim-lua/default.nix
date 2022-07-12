@@ -1,6 +1,5 @@
 { lib
 , stdenv
-, fetchGit
 , cmake
 , gettext
 , msgpack
@@ -48,7 +47,7 @@ stdenv.mkDerivation rec {
   pname = "neovim-lua-unwrapped";
   version = "master";
 
-  src = fetchGit {
+  src = builtins.fetchGit {
     url = "https://github.com/neovim/neovim.git";
     ref = "HEAD";
   };
