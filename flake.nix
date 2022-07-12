@@ -7,11 +7,11 @@
   };
   outputs = { self, nixpkgs, ... }:
     rec {
-      overlay =
+      overlay = final: prev:
         let
           pkgs = nixpkgs.legacyPackages.${prev.system};
         in
-        final: prev: rec {
+        rec {
           neovimLuaUtils = final.callPackage ./neovim-lua/utils.nix {
             inherit (pkgs.lua51Packages) buildLuarocksPackage;
           };
