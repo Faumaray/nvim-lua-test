@@ -300,16 +300,16 @@ in
     mkIf cfg.enable {
       warnings = optional (cfg.configure != { }) ''
         programs.neovim-lua.configure is deprecated.
-        Other programs.neovim options can override its settings or ignore them.
+        Other programs.neovim-lua options can override its settings or ignore them.
         Please use the other options at your disposal:
           configure.packages.*.opt  -> programs.neovim-lua.plugins = [ { plugin = ...; optional = true; }]
           configure.packages.*.start  -> programs.neovim-lua.plugins = [ { plugin = ...; }]
           configure.customRC -> programs.neovim-lua.extraConfig
       '';
-       programs.neovim.generatedConfigs = let
-      grouped = lib.lists.groupBy (x: x.type) pluginsNormalized;
-      concatConfigs = lib.concatMapStrings (p: p.config);
-    in mapAttrs (name: vals: concatConfigs vals) grouped;
+       programs.neovim-lua.generatedConfigs = let
+      	 grouped = lib.lists.groupBy (x: x.type) pluginsNormalized;
+      	 concatConfigs = lib.concatMapStrings (p: p.config);
+       in mapAttrs (name: vals: concatConfigs vals) grouped;
 
       # home.packages = [ cfg.finalPackage ];
       environment.systemPackages = [
