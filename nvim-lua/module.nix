@@ -306,7 +306,7 @@ in
       '';
 
 
-      home.packages = [ cfg.finalPackage ];
+      # home.packages = [ cfg.finalPackage ];
 
       # xdg.configFile =
       #   if cfg.lua then {
