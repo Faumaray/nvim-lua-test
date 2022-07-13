@@ -187,7 +187,7 @@ let
         inherit withPython3;
         extraPython3Packages = compatFun extraPython3Packages;
         inherit extraLuaPackages;
-        inherit withNodeJs withRuby viAlias vimAlias;
+        inherit withNodeJs withRuby viAlias vimAlias lua;
         inherit configure;
         inherit extraName;
       };
