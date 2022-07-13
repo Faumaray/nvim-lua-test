@@ -6,11 +6,11 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
   outputs = { self, nixpkgs, ... }:
-    nixosModules = rec {
+    rec {
+      nixosModules = rec {
         neovim-lua = import ./nvim-lua/module.nix;
         default = neovim-lua;
-    };
-    rec {
+      };
       overlay = final: prev:
         let
           pkgs = nixpkgs.legacyPackages.${prev.system};
