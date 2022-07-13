@@ -28,7 +28,7 @@
             lua = pkgs.luajit;
           };
           wrapNeovimLua = neovim-lua-unwrapped: pkgs.lib.makeOverridable (neovimLuaUtils.legacyWrapper neovim-lua-unwrapped);
-          neovim-lua = wrapNeovim neovim-lua-unwrapped { };
+          neovim-lua = wrapNeovimLua neovim-lua-unwrapped { };
 
         };
     };
