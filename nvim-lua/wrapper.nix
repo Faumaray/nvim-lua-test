@@ -123,7 +123,8 @@ let
         makeWrapper ${lib.escapeShellArgs finalMakeWrapperArgs} ${wrapperArgsStr}
       '';
 
-      paths = [ neovim ];
+      paths = [ 
+neovim ];
 
       preferLocalBuild = true;
 
@@ -134,7 +135,7 @@ let
 
       };
 
-      meta = neovim-lua.meta // {
+      meta = neovim.meta // {
         # To prevent builds on hydra
         hydraPlatforms = [ ];
         # prefer wrapper over the package
