@@ -134,7 +134,7 @@ let
 
       };
 
-      meta = neovim.meta // {
+      meta = neovim-lua.meta // {
         # To prevent builds on hydra
         hydraPlatforms = [ ];
         # prefer wrapper over the package

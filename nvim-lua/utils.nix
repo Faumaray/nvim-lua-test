@@ -1,14 +1,14 @@
 { lib
 , buildLuarocksPackage
 , callPackage
-, vimUtils
+, vimUtilsHybrid
 , nodejs
-, neovim-unwrapped
+, neovim-lua-unwrapped
 , bundlerEnv
 , ruby
 , python3Packages
 , writeText
-, wrapNeovimUnstable
+, wrapNeovimLuaUnstable
 }:
 let
   # returns everything needed for the caller to wrap its own neovim:
@@ -71,7 +71,7 @@ let
 
       pluginRc = lib.concatMapStrings pluginConfig pluginsNormalized;
 
-      requiredPlugins = vimUtils.requiredPlugins configurePatched;
+      requiredPlugins = vimUtilsHybrid.requiredPlugins configurePatched;
       getDeps = attrname: map (plugin: plugin.${attrname} or (_: [ ]));
 
       pluginPython3Packages = getDeps "python3Dependencies" requiredPlugins;
@@ -80,7 +80,7 @@ let
         ++ (extraPython3Packages ps)
         ++ (lib.concatMap (f: f ps) pluginPython3Packages));
 
-      luaEnv = neovim-unwrapped.lua.withPackages (extraLuaPackages);
+      luaEnv = neovim-lua-unwrapped.lua.withPackages (extraLuaPackages);
 
       # Mapping a boolean argument to a key that tells us whether to add or not to
       # add to nvim's 'embedded rc' this:
@@ -128,16 +128,16 @@ let
           "--prefix"
           "LUA_PATH"
           ";"
-          (neovim-unwrapped.lua.pkgs.lib.genLuaPathAbsStr luaEnv)
+          (neovim-lua-unwrapped.lua.pkgs.lib.genLuaPathAbsStr luaEnv)
           "--prefix"
           "LUA_CPATH"
           ";"
-          (neovim-unwrapped.lua.pkgs.lib.genLuaCPathAbsStr luaEnv)
+          (neovim-lua-unwrapped.lua.pkgs.lib.genLuaCPathAbsStr luaEnv)
         ];
 
 
-      manifestRc = if lua then vimUtils.vimrcContent.Lua (configurePatched // { customRC = ""; }) else vimUtils.vimrcContent.Vim (configurePatched // { customRC = ""; });
-      neovimRcContent = if lua then vimUtils.vimrcContent.Lua configurePatched else vimUtils.vimrcContent.Vim configurePatched;
+      manifestRc = if lua then vimUtilsHybrid.vimrcContent.Lua (configurePatched // { customRC = ""; }) else vimUtilsHybrid.vimrcContent.Vim (configurePatched // { customRC = ""; });
+      neovimRcContent = if lua then vimUtilsHybrid.vimrcContent.Lua configurePatched else vimUtilsHybrid.vimrcContent.Vim configurePatched;
     in
     assert withPython2 -> throw "Python2 support has been removed from neovim, please remove withPython2 and extraPython2Packages.";
 
@@ -194,7 +194,7 @@ let
     in
     assert withPython -> throw "Python2 support has been removed from neovim, please remove withPython and extraPythonPackages.";
 
-    wrapNeovimUnstable neovim (res // {
+    wrapNeovimLuaUnstable neovim (res // {
       wrapperArgs = lib.escapeShellArgs res.wrapperArgs + " " + extraMakeWrapperArgs;
       wrapRc = (configure != { });
     });
@@ -204,7 +204,7 @@ in
   inherit legacyWrapper;
 
   buildNeovimPluginFrom2Nix = callPackage ./build-neovim-plugin.nix {
-    inherit (vimUtils) buildVimPluginFrom2Nix toVimPlugin;
+    inherit (vimUtilsHybrid) buildVimPluginFrom2Nix toVimPlugin;
     inherit buildLuarocksPackage;
   };
 }

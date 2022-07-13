@@ -6,25 +6,29 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
   outputs = { self, nixpkgs, ... }:
+    nixosModules = rec {
+        neovim-lua = import ./nvim-lua/module.nix;
+        default = neovim-lua;
+    };
     rec {
       overlay = final: prev:
         let
           pkgs = nixpkgs.legacyPackages.${prev.system};
         in
         rec {
-          vimUtils = final.callPackage ./nvim-lua/vim-utils.nix {
+          vimUtilsHybrid = final.callPackage ./nvim-lua/vim-utils.nix {
             inherit (pkgs.lua51Packages) hasLuaModule;
           };
-          neovimUtils = final.callPackage ./nvim-lua/utils.nix {
+          neovimLuaUtils = final.callPackage ./nvim-lua/utils.nix {
             inherit (pkgs.lua51Packages) buildLuarocksPackage;
           };
-          wrapNeovimUnstable = final.callPackage ./nvim-lua/wrapper.nix { };
-          neovim-unwrapped = final.callPackage ./nvim-lua {
+          wrapNeovimLuaUnstable = final.callPackage ./nvim-lua/wrapper.nix { };
+          neovim-lua-unwrapped = final.callPackage ./nvim-lua {
             CoreServices = pkgs.darwin.apple_sdk.frameworks.CoreServices;
             lua = pkgs.luajit;
           };
-          wrapNeovim = neovim-unwrapped: pkgs.lib.makeOverridable (neovimUtils.legacyWrapper neovim-unwrapped);
-          neovim = wrapNeovim neovim-unwrapped { };
+          wrapNeovimLua = neovim-lua-unwrapped: pkgs.lib.makeOverridable (neovimLuaUtils.legacyWrapper neovim-lua-unwrapped);
+          neovim-lua = wrapNeovim neovim-lua-unwrapped { };
 
         };
     };

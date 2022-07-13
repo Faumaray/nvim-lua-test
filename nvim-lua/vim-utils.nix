@@ -322,26 +322,26 @@ rec {
     { };
 
   vimCommandCheckHook = callPackage
-    ({ neovim-unwrapped }:
+    ({ neovim-lua-unwrapped }:
       makeSetupHook
         {
           name = "vim-command-check-hook";
-          deps = [ neovim-unwrapped ];
+          deps = [ neovim-lua-unwrapped ];
           substitutions = {
-            vimBinary = "${neovim-unwrapped}/bin/nvim";
+            vimBinary = "${neovim-lua-unwrapped}/bin/nvim";
             inherit rtpPath;
           };
         } ./vim-command-check-hook.sh)
     { };
 
   neovimRequireCheckHook = callPackage
-    ({ neovim-unwrapped }:
+    ({ neovim-lua-unwrapped }:
       makeSetupHook
         {
           name = "neovim-require-check-hook";
-          deps = [ neovim-unwrapped ];
+          deps = [ neovim-lua-unwrapped ];
           substitutions = {
-            nvimBinary = "${neovim-unwrapped}/bin/nvim";
+            nvimBinary = "${neovim-lua-unwrapped}/bin/nvim";
             inherit rtpPath;
           };
         } ./neovim-require-check-hook.sh)
