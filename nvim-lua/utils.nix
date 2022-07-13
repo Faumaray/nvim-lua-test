@@ -1,9 +1,9 @@
 { lib
 , buildLuarocksPackage
 , callPackage
-, vimUtilsHybrid
+, vimUtils
 , nodejs
-, neovim-lua-unwrapped
+, neovim-unwrapped
 , bundlerEnv
 , ruby
 , python3Packages
@@ -80,7 +80,7 @@ let
         ++ (extraPython3Packages ps)
         ++ (lib.concatMap (f: f ps) pluginPython3Packages));
 
-      luaEnv = neovim-lua-unwrapped.lua.withPackages (extraLuaPackages);
+      luaEnv = neovim-unwrapped.lua.withPackages (extraLuaPackages);
 
       # Mapping a boolean argument to a key that tells us whether to add or not to
       # add to nvim's 'embedded rc' this:
@@ -128,16 +128,16 @@ let
           "--prefix"
           "LUA_PATH"
           ";"
-          (neovim-lua-unwrapped.lua.pkgs.lib.genLuaPathAbsStr luaEnv)
+          (neovim-unwrapped.lua.pkgs.lib.genLuaPathAbsStr luaEnv)
           "--prefix"
           "LUA_CPATH"
           ";"
-          (neovim-lua-unwrapped.lua.pkgs.lib.genLuaCPathAbsStr luaEnv)
+          (neovim-unwrapped.lua.pkgs.lib.genLuaCPathAbsStr luaEnv)
         ];
 
 
-      manifestRc = if lua then vimUtilsHybrid.vimrcContent.Lua (configurePatched // { customRC = ""; }) else vimUtilsHybrid.vimrcContent.Vim (configurePatched // { customRC = ""; });
-      neovimRcContent = if lua then vimUtilsHybrid.vimrcContent.Lua configurePatched else vimUtilsHybrid.vimrcContent.Vim configurePatched;
+      manifestRc = if lua then vimUtils.vimrcContent.Lua (configurePatched // { customRC = ""; }) else vimUtils.vimrcContent.Vim (configurePatched // { customRC = ""; });
+      neovimRcContent = if lua then vimUtils.vimrcContent.Lua configurePatched else vimUtils.vimrcContent.Vim configurePatched;
     in
     assert withPython2 -> throw "Python2 support has been removed from neovim, please remove withPython2 and extraPython2Packages.";
 
@@ -204,7 +204,7 @@ in
   inherit legacyWrapper;
 
   buildNeovimPluginFrom2Nix = callPackage ./build-neovim-plugin.nix {
-    inherit (vimUtilsHybrid) buildVimPluginFrom2Nix toVimPlugin;
+    inherit (vimUtils) buildVimPluginFrom2Nix toVimPlugin;
     inherit buildLuarocksPackage;
   };
 }

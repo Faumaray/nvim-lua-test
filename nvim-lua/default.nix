@@ -44,7 +44,7 @@ let
   pyEnv = python3.withPackages (ps: with ps; [ pynvim msgpack ]);
 in
 stdenv.mkDerivation rec {
-  pname = "neovim-lua-unwrapped";
+  pname = "neovim-unwrapped";
   version = "master";
 
   src = builtins.fetchGit {
