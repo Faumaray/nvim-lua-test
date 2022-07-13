@@ -292,7 +292,7 @@ in
         inherit (cfg) extraPython3Packages lua withPython3 withRuby viAlias vimAlias;
         withNodeJs = cfg.withNodeJs;
         configure = cfg.configure;
-        plugins = map suppressNotVimlConfig pluginsNormalized;
+        plugins = pluginsNormalized;
         customRC = cfg.extraConfig;
       };
 
