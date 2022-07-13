@@ -8,7 +8,7 @@
   outputs = { self, nixpkgs, ... }:
     rec {
       nixosModules = rec {
-        neovim-lua = import ./nvim-lua/module.nix;
+        neovim-lua = import ./lib/module.nix;
         default = neovim-lua;
       };
       overlay = final: prev:
@@ -16,14 +16,14 @@
           pkgs = nixpkgs.legacyPackages.${prev.system};
         in
         rec {
-          vimUtilsHybrid = final.callPackage ./nvim-lua/vim-utils.nix {
+          vimUtilsHybrid = final.callPackage ./lib/plugins/vim-utils.nix {
             inherit (pkgs.lua51Packages) hasLuaModule;
           };
-          neovimLuaUtils = final.callPackage ./nvim-lua/utils.nix {
+          neovimLuaUtils = final.callPackage ./lib/neovim/utils.nix {
             inherit (pkgs.lua51Packages) buildLuarocksPackage;
           };
-          wrapNeovimLuaUnstable = final.callPackage ./nvim-lua/wrapper.nix { };
-          neovim-lua-unwrapped = final.callPackage ./nvim-lua {
+          wrapNeovimLuaUnstable = final.callPackage ./lib/neovim/wrapper.nix { };
+          neovim-lua-unwrapped = final.callPackage ./lib/neovim {
             CoreServices = pkgs.darwin.apple_sdk.frameworks.CoreServices;
             lua = pkgs.luajit;
           };
