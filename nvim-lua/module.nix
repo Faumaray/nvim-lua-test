@@ -306,10 +306,10 @@ in
           configure.packages.*.start  -> programs.neovim-lua.plugins = [ { plugin = ...; }]
           configure.customRC -> programs.neovim-lua.extraConfig
       '';
-       programs.neovim-lua.generatedConfigs = let
-      	 grouped = lib.lists.groupBy (x: x.type) pluginsNormalized;
-      	 concatConfigs = lib.concatMapStrings (p: p.config);
-       in mapAttrs (name: vals: concatConfigs vals) grouped;
+       #programs.neovim-lua.generatedConfigs = let
+      #	 grouped = lib.lists.groupBy (x: x.type) pluginsNormalized;
+     # 	 concatConfigs = lib.concatMapStrings (p: p.config);
+     #  in mapAttrs (name: vals: concatConfigs vals) grouped;
 
       # home.packages = [ cfg.finalPackage ];
       environment.systemPackages = [
@@ -335,10 +335,10 @@ in
       #           neovimConfig.neovimRcContent;
       #     };
       #   };
-      xdg.configFile."nvim/lua/init-hmanager.lua" =
-         mkIf (hasAttr "lua" config.programs.neovim-lua.generatedConfigs) {
-           text = config.programs.neovim-lua.generatedConfigs.lua;
-         };
+      #xdg.configFile."nvim/lua/init-hmanager.lua" =
+      #   mkIf (hasAttr "lua" config.programs.neovim-lua.generatedConfigs) {
+      #     text = config.programs.neovim-lua.generatedConfigs.lua;
+      #   };
 
       programs.neovim-lua.finalPackage = pkgs.wrapNeovimLuaUnstable cfg.package
         (neovimConfig // {
