@@ -8,8 +8,6 @@ let
   runtime' = filter (f: f.enable) (attrValues cfg.runtime);
 
   runtime = pkgs.linkFarm "neovim-runtime" (map (x: { name = x.target; path = x.source; }) runtime');
-
-  addition = if cfg.lua then ''set runtimepath^=${runtime}/etc'' else ''vim.opt.runtimepath:append("${runtime}/etc")'';
 in
 {
   options.programs.neovim-lua = {
@@ -165,7 +163,7 @@ in
     programs.neovim-lua.finalPackage = pkgs.wrapNeovimLua cfg.package {
       inherit (cfg) viAlias vimAlias lua withPython3 withNodeJs withRuby;
       configure = cfg.configure // {
-        customRC = (cfg.configure.customRC or "") + addition;
+        customRC = (cfg.configure.customRC or "");
       };
     };
   };
