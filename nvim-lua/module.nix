@@ -318,8 +318,7 @@ in
          };
 
       programs.neovim-lua.finalPackage = pkgs.wrapNeovimLuaUnstable cfg.package
-        (inherit (cfg) viAlias vimAlias withPython3 withNodeJs withRuby;
-	neovimConfig // {
+        (neovimConfig // {
           wrapperArgs = (lib.escapeShellArgs neovimConfig.wrapperArgs) + " "
             + extraMakeWrapperArgs + " " + extraMakeWrapperLuaCArgs + " "
             + extraMakeWrapperLuaArgs;	  
