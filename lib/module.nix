@@ -222,7 +222,7 @@ in
     programs.neovim-lua.finalPackage = pkgs.wrapNeovimLua cfg.package {
       inherit (cfg) viAlias vimAlias lua withPython3 withNodeJs withRuby;
       configure = cfg.configure // {
-        inherit (cfg) packages;
+        packages.plugins.start = cfg.plugins;
         customRC = (cfg.extraConfig or cfg.configure.customRC or "");
       };
     };
