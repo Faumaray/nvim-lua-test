@@ -160,7 +160,7 @@ let
         beforePlugins
       ]
       ++ lib.optional (packages != null && packages != [ ]) (nativeImpl.vim packages)
-      ++ lib.optional (plug != null) plugImpl
+      # ++ lib.optional (plug != null) plugImpl
       ++ [ customRC ];
 
     in
