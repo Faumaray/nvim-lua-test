@@ -71,7 +71,7 @@ let
 
       pluginRc = lib.concatMapStrings pluginConfig pluginsNormalized;
 
-      requiredPlugins = vimUtilsHybrid.requiredPlugins configurePatched;
+      requiredPlugins = vimUtils.requiredPlugins configurePatched;
       getDeps = attrname: map (plugin: plugin.${attrname} or (_: [ ]));
 
       pluginPython3Packages = getDeps "python3Dependencies" requiredPlugins;
