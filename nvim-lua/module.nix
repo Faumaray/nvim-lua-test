@@ -4,7 +4,7 @@ with lib;
 
 let
 
-  cfg = config.home-manager.programs.neovim-lua;
+  cfg = config.programs.neovim-lua;
 
   jsonFormat = pkgs.formats.json { };
 
