@@ -107,7 +107,7 @@ in
 
   options = {
     programs.neovim-lua = {
-      enable = mkEnableOption "Neovim-Lua";
+      enable = mkEnableOption "Neovim";
 
       lua = mkOption {
         type = types.bool;
