@@ -123,8 +123,9 @@ let
         makeWrapper ${lib.escapeShellArgs finalMakeWrapperArgs} ${wrapperArgsStr}
       '';
 
-      paths = [ 
-neovim ];
+      paths = [
+        neovim
+      ];
 
       preferLocalBuild = true;
 

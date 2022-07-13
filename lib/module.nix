@@ -8,6 +8,7 @@ let
   runtime' = filter (f: f.enable) (attrValues cfg.runtime);
 
   runtime = pkgs.linkFarm "neovim-runtime" (map (x: { name = x.target; path = x.source; }) runtime');
+
 in
 {
   options.programs.neovim-lua = {
@@ -81,6 +82,54 @@ in
       description = ''
         Generate your init file from your list of plugins and custom commands.
         Neovim will then be wrapped to load <command>nvim -u /nix/store/<replaceable>hash</replaceable>-vimrc</command>
+      '';
+    };
+
+    plugins = mkOption {
+      type = types.listOf types.package;
+      default = [ ];
+      description = "Plugins to be autoloaded";
+      example = literalExpression ''
+        with pkgs.vimPlugins; [ dracula-vim ]
+      '';
+    };
+
+    optionalPlugins = mkOption {
+      type = types.listOf types.package;
+      default = [ ];
+      description = "Optional plugins";
+      example = literalExpression ''
+        with pkgs.vimPlugins; [ dracula-vim ]
+      '';
+    };
+
+    packages = mkOption {
+      type = types.attrsOf (types.submodule ({
+        options.start = mkOption {
+          type = types.listOf types.package;
+          default = [ ];
+          description = "Plugins to be autoloaded";
+          example = literalExpression ''
+            with pkgs.vimPlugins; [ dracula-vim ]
+          '';
+        };
+
+        options.opt = mkOption {
+          type = types.listOf types.package;
+          default = [ ];
+          description = "Optional plugins";
+          example = literalExpression ''
+            with pkgs.vimPlugins; [ dracula-vim ]
+          '';
+        };
+      }));
+      default = { };
+      description = "Attributes gets passed to 'configure.packages'";
+      example = literalExpression ''
+        with pkgs.vimPlugins; {
+          start = [ ];
+          opt = [];
+        };
       '';
     };
 
@@ -163,7 +212,8 @@ in
     programs.neovim-lua.finalPackage = pkgs.wrapNeovimLua cfg.package {
       inherit (cfg) viAlias vimAlias lua withPython3 withNodeJs withRuby;
       configure = cfg.configure // {
-        customRC = (cfg.configure.customRC or "");
+        inherit (cfg) packages;
+        customRC = (cfg.extraConfig or cfg.configure.customRC or "");
       };
     };
   };
