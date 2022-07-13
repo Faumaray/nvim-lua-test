@@ -3,7 +3,7 @@
 with lib;
 
 let
-  cfg = config.programs.neovim;
+  cfg = config.programs.neovim-lua;
 
   runtime' = filter (f: f.enable) (attrValues cfg.runtime);
 
@@ -11,7 +11,7 @@ let
 
 in
 {
-  options.programs.neovim = {
+  options.programs.neovim-lua = {
     enable = mkEnableOption "Neovim";
 
     defaultEditor = mkOption {
@@ -88,7 +88,7 @@ in
     package = mkOption {
       type = types.package;
       default = pkgs.neovim-lua-unwrapped;
-      defaultText = literalExpression "pkgs.neovim-unwrapped";
+      defaultText = literalExpression "pkgs.neovim-lua-unwrapped";
       description = "The package to use for the neovim binary.";
     };
 
@@ -162,7 +162,7 @@ in
     ];
     environment.variables.EDITOR = mkIf cfg.defaultEditor (mkOverride 900 "nvim");
     addition = if cfg.lua then ''set runtimepath^=${runtime}/etc'' else ''vim.opt.runtimepath:append("${runtime}/etc")'';
-    programs.neovim.finalPackage = pkgs.wrapNeovim cfg.package {
+    programs.neovim-lua.finalPackage = pkgs.wrapNeovimLua cfg.package {
       inherit (cfg) viAlias vimAlias lua withPython3 withNodeJs withRuby;
       configure = cfg.configure // {
         customRC = (cfg.configure.customRC or "") + addition;
