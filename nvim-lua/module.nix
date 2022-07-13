@@ -64,18 +64,7 @@ let
     '' else
       "";
 
-  moduleConfigure = {
-    packages.home-manager = {
-      start = remove null (map
-        (x: if x ? plugin && x.optional == true then null else (x.plugin or x))
-        allPlugins);
-      opt = remove null
-        (map (x: if x ? plugin && x.optional == true then x.plugin else null)
-          allPlugins);
-    };
-    beforePlugins = "";
-  };
-
+ 
   extraMakeWrapperArgs = lib.optionalString (cfg.extraPackages != [ ])
     ''--suffix PATH : "${lib.makeBinPath cfg.extraPackages}"'';
   extraMakeWrapperLuaCArgs = lib.optionalString (cfg.extraLuaPackages != [ ]) ''
@@ -275,14 +264,14 @@ in
             config = "";
             optional = false;
           })
-        allPlugins;
+        ;
       suppressNotVimlConfig = p:
         if p.type != "viml" then p // { config = ""; } else p;
 
       neovimConfig = pkgs.neovimLuaUtils.makeNeovimConfig {
         inherit (cfg) extraPython3Packages lua withPython3 withRuby viAlias vimAlias;
         withNodeJs = cfg.withNodeJs;
-        configure = cfg.configure // moduleConfigure;
+        configure = cfg.configure;
         plugins = map suppressNotVimlConfig pluginsNormalized;
         customRC = cfg.extraConfig;
       };
