@@ -64,13 +64,6 @@ let
     '' else
       "";
 
-  allPlugins = cfg.plugins ++ optional cfg.coc.enable {
-    type = "viml";
-    plugin = cfg.coc.package;
-    config = cfg.coc.pluginConfig;
-    optional = false;
-  };
-
   moduleConfigure = {
     packages.home-manager = {
       start = remove null (map
