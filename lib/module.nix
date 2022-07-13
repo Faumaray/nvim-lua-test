@@ -85,6 +85,16 @@ in
       '';
     };
 
+    extraConfig = mkOption {
+	type = types.lines;
+	default = '''';
+	description = ''
+		Extra configuration goes to init file;
+		Alternative to configure.customRC
+	'';
+
+	    };
+
     plugins = mkOption {
       type = types.listOf types.package;
       default = [ ];
