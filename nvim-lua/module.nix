@@ -63,7 +63,7 @@ let
       " }}}
     '' else
       "";
-
+  allPlugins = cfg.plugins; 
  
   extraMakeWrapperArgs = lib.optionalString (cfg.extraPackages != [ ])
     ''--suffix PATH : "${lib.makeBinPath cfg.extraPackages}"'';
@@ -312,17 +312,17 @@ in
       #           neovimConfig.neovimRcContent;
       #     };
       #   };
-      # xdg.configFile."nvim/lua/init-hmanager.lua" =
-      #   mkIf (hasAttr "lua" config.programs.neovim-lua.generatedConfigs) {
-      #     text = config.programs.neovim-lua.generatedConfigs.lua;
-      #   };
+      xdg.configFile."nvim/lua/init-hmanager.lua" =
+         mkIf (hasAttr "lua" config.programs.neovim-lua.generatedConfigs) {
+           text = config.programs.neovim-lua.generatedConfigs.lua;
+         };
 
       programs.neovim-lua.finalPackage = pkgs.wrapNeovimLuaUnstable cfg.package
-        (neovimConfig // {
+        (inherit (cfg) viAlias vimAlias withPython3 withNodeJs withRuby;
+	neovimConfig // {
           wrapperArgs = (lib.escapeShellArgs neovimConfig.wrapperArgs) + " "
             + extraMakeWrapperArgs + " " + extraMakeWrapperLuaCArgs + " "
-            + extraMakeWrapperLuaArgs;
-          wrapRc = false;
+            + extraMakeWrapperLuaArgs;	  
         });
 
       programs.bash.shellAliases = mkIf cfg.vimdiffAlias { vimdiff = "nvim -d"; };
