@@ -9,6 +9,7 @@ let
 
   runtime = pkgs.linkFarm "neovim-runtime" (map (x: { name = x.target; path = x.source; }) runtime');
 
+  addition = if cfg.lua then ''set runtimepath^=${runtime}/etc'' else ''vim.opt.runtimepath:append("${runtime}/etc")'';
 in
 {
   options.programs.neovim-lua = {
@@ -161,7 +162,6 @@ in
       cfg.finalPackage
     ];
     environment.variables.EDITOR = mkIf cfg.defaultEditor (mkOverride 900 "nvim");
-    addition = if cfg.lua then ''set runtimepath^=${runtime}/etc'' else ''vim.opt.runtimepath:append("${runtime}/etc")'';
     programs.neovim-lua.finalPackage = pkgs.wrapNeovimLua cfg.package {
       inherit (cfg) viAlias vimAlias lua withPython3 withNodeJs withRuby;
       configure = cfg.configure // {
