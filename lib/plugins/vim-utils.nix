@@ -207,7 +207,7 @@ let
         beforePlugins
       ]
       ++ lib.optional (packages != null && packages != [ ]) (nativeImpl.lua packages)
-      ++ lib.optional (plug != null) plugImpl
+      # ++ lib.optional (plug != null) plugImpl
       ++ [ customRC ];
 
     in
