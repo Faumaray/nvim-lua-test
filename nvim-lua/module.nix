@@ -314,7 +314,7 @@ in
             text =
               if hasAttr "lua" config.programs.neovim.generatedConfigs then
                 neovimConfig.neovimRcContent + ''
-                  lua require('init-home-manager')''
+                  lua require('init-hmanager')''
               else
                 neovimConfig.neovimRcContent;
           };
@@ -323,12 +323,12 @@ in
             text =
               if hasAttr "lua" config.programs.neovim.generatedConfigs then
                 neovimConfig.neovimRcContent + ''
-                  require('init-home-manager')''
+                  require('init-hmanager')''
               else
                 neovimConfig.neovimRcContent;
           };
         };
-      xdg.configFile."nvim/lua/init-home-manager.lua" =
+      xdg.configFile."nvim/lua/init-hmanager.lua" =
         mkIf (hasAttr "lua" config.programs.neovim-lua.generatedConfigs) {
           text = config.programs.neovim-lua.generatedConfigs.lua;
         };
