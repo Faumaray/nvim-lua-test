@@ -308,30 +308,30 @@ in
 
       home.packages = [ cfg.finalPackage ];
 
-      xdg.configFile =
-        if cfg.lua then {
-          "nvim/init.vim" = mkIf (neovimConfig.neovimRcContent != "") {
-            text =
-              if hasAttr "lua" config.programs.neovim.generatedConfigs then
-                neovimConfig.neovimRcContent + ''
-                  lua require('init-hmanager')''
-              else
-                neovimConfig.neovimRcContent;
-          };
-        } else {
-          "nvim/init.lua" = mkIf (neovimConfig.neovimRcContent != "") {
-            text =
-              if hasAttr "lua" config.programs.neovim.generatedConfigs then
-                neovimConfig.neovimRcContent + ''
-                  require('init-hmanager')''
-              else
-                neovimConfig.neovimRcContent;
-          };
-        };
-      xdg.configFile."nvim/lua/init-hmanager.lua" =
-        mkIf (hasAttr "lua" config.programs.neovim-lua.generatedConfigs) {
-          text = config.programs.neovim-lua.generatedConfigs.lua;
-        };
+      # xdg.configFile =
+      #   if cfg.lua then {
+      #     "nvim/init.vim" = mkIf (neovimConfig.neovimRcContent != "") {
+      #       text =
+      #         if hasAttr "lua" config.programs.neovim.generatedConfigs then
+      #           neovimConfig.neovimRcContent + ''
+      #             lua require('init-hmanager')''
+      #         else
+      #           neovimConfig.neovimRcContent;
+      #     };
+      #   } else {
+      #     "nvim/init.lua" = mkIf (neovimConfig.neovimRcContent != "") {
+      #       text =
+      #         if hasAttr "lua" config.programs.neovim.generatedConfigs then
+      #           neovimConfig.neovimRcContent + ''
+      #             require('init-hmanager')''
+      #         else
+      #           neovimConfig.neovimRcContent;
+      #     };
+      #   };
+      # xdg.configFile."nvim/lua/init-hmanager.lua" =
+      #   mkIf (hasAttr "lua" config.programs.neovim-lua.generatedConfigs) {
+      #     text = config.programs.neovim-lua.generatedConfigs.lua;
+      #   };
 
       programs.neovim-lua.finalPackage = pkgs.wrapNeovimLuaUnstable cfg.package
         (neovimConfig // {
