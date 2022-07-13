@@ -307,7 +307,9 @@ in
 
 
       # home.packages = [ cfg.finalPackage ];
-
+      environment.systemPackages = [
+         cfg.finalPackage
+      ];
       # xdg.configFile =
       #   if cfg.lua then {
       #     "nvim/init.vim" = mkIf (neovimConfig.neovimRcContent != "") {
